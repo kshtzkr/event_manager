@@ -1,9 +1,10 @@
 class RsvpsController < ApplicationController
-	before_action :set_rsvps, only: %i[ update destroy ]
+	before_action :set_rsvps, only: %i[ update ]
 
 	def create
 		@rsvp = Rsvp.new(rsvp_params)
 		find_rsvps = Rsvp.where(user_id: rsvp_params[:user_id])
+
 
 		if find_rsvps
 			event_ids = find_rsvps.pluck(:event_id)
@@ -29,12 +30,6 @@ class RsvpsController < ApplicationController
 	  	data = { data: @rsvp.errors, status: :unprocessable_entity }
 	    render :json => data
 	  end
-	end
-
-	def destroy
-		@rsvp.destroy
-		data = {status: :ok, message: "Rsvp was successfully destroyed." }
-		render :json => data
 	end
 
 	private
